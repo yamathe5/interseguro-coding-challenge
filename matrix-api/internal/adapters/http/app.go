@@ -37,5 +37,6 @@ func New() *fiber.App {
 	health := func(c *fiber.Ctx) error { return c.JSON(fiber.Map{"status": "ok"}) }
 	app.Get("/health/live", health)
 	app.Get("/health/ready", health)
+	app.Post("/api/v1/matrices/rotate", matrixEndpoint(rotate))
 	return app
 }
