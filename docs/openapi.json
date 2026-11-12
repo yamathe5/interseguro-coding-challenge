@@ -1,0 +1,727 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Interseguro APIs",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080"
+    }
+  ],
+  "paths": {
+    "/health/live": {
+      "get": {
+        "summary": "Process liveness",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health/ready": {
+      "get": {
+        "summary": "Service readiness",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Statistics dependency is unavailable (Go only)",
+            "headers": {
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/matrices/qr": {
+      "post": {
+        "summary": "Reduced QR factorization",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "matrix": {
+                    "$ref": "#/components/schemas/Matrix"
+                  }
+                },
+                "required": [
+                  "matrix"
+                ]
+              },
+              "example": {
+                "matrix": [
+                  [
+                    1,
+                    2,
+                    3
+                  ],
+                  [
+                    4,
+                    5,
+                    6
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QR"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed JSON",
+            "headers": {
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds body limit",
+            "headers": {
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid matrix or operation, or numeric overflow",
+            "headers": {
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/matrices/rotate": {
+      "post": {
+        "summary": "Rotate 90 degrees clockwise",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "matrix": {
+                    "$ref": "#/components/schemas/Matrix"
+                  },
+                  "direction": {
+                    "const": "clockwise"
+                  }
+                },
+                "required": [
+                  "matrix"
+                ]
+              },
+              "example": {
+                "matrix": [
+                  [
+                    1,
+                    2,
+                    3
+                  ],
+                  [
+                    4,
+                    5,
+                    6
+                  ]
+                ],
+                "direction": "clockwise"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Rotation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed JSON",
+            "headers": {
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds body limit",
+            "headers": {
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid matrix or operation, or numeric overflow",
+            "headers": {
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/matrices/analyze": {
+      "post": {
+        "summary": "Compute statistics over Q and R, or the rotated matrix",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "matrix": {
+                    "$ref": "#/components/schemas/Matrix"
+                  },
+                  "operation": {
+                    "enum": [
+                      "qr",
+                      "rotate"
+                    ]
+                  }
+                },
+                "required": [
+                  "matrix",
+                  "operation"
+                ]
+              },
+              "example": {
+                "matrix": [
+                  [
+                    1,
+                    2,
+                    3
+                  ],
+                  [
+                    4,
+                    5,
+                    6
+                  ]
+                ],
+                "operation": "qr"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "operation": {
+                      "enum": [
+                        "qr",
+                        "rotate"
+                      ]
+                    },
+                    "result": {
+                      "oneOf": [
+                        {
+                          "$ref": "#/components/schemas/QR"
+                        },
+                        {
+                          "$ref": "#/components/schemas/Rotation"
+                        }
+                      ]
+                    },
+                    "statistics": {
+                      "$ref": "#/components/schemas/Statistics"
+                    }
+                  },
+                  "required": [
+                    "operation",
+                    "result",
+                    "statistics"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed JSON",
+            "headers": {
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds body limit",
+            "headers": {
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid matrix or operation, or numeric overflow",
+            "headers": {
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Statistics call failed",
+            "headers": {
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/internal/v1/statistics": {
+      "servers": [
+        {
+          "url": "http://statistics-api:3000",
+          "description": "Compose private network"
+        }
+      ],
+      "post": {
+        "summary": "Aggregate across all submitted matrices",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "matrices": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Matrix"
+                    },
+                    "minItems": 1,
+                    "maxItems": 10
+                  }
+                },
+                "required": [
+                  "matrices"
+                ]
+              },
+              "example": {
+                "matrices": [
+                  [
+                    [
+                      1,
+                      0
+                    ],
+                    [
+                      0,
+                      2
+                    ]
+                  ],
+                  [
+                    [
+                      3,
+                      4
+                    ],
+                    [
+                      5,
+                      6
+                    ]
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Statistics"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed JSON",
+            "headers": {
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request exceeds body limit",
+            "headers": {
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid matrix or operation, or numeric overflow",
+            "headers": {
+              "X-Request-ID": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Matrix": {
+        "type": "array",
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 1,
+          "maxItems": 100
+        },
+        "minItems": 1,
+        "maxItems": 100
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "requestId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "code",
+              "message",
+              "requestId"
+            ]
+          }
+        },
+        "required": [
+          "error"
+        ]
+      },
+      "QR": {
+        "type": "object",
+        "properties": {
+          "q": {
+            "$ref": "#/components/schemas/Matrix"
+          },
+          "r": {
+            "$ref": "#/components/schemas/Matrix"
+          },
+          "shape": {
+            "type": "object",
+            "properties": {
+              "rows": {
+                "type": "integer"
+              },
+              "cols": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "rows",
+              "cols"
+            ]
+          },
+          "convention": {
+            "const": "thin"
+          }
+        },
+        "required": [
+          "q",
+          "r",
+          "shape",
+          "convention"
+        ]
+      },
+      "Rotation": {
+        "type": "object",
+        "properties": {
+          "matrix": {
+            "$ref": "#/components/schemas/Matrix"
+          },
+          "rotationDegrees": {
+            "const": 90
+          }
+        },
+        "required": [
+          "matrix",
+          "rotationDegrees"
+        ]
+      },
+      "Statistics": {
+        "type": "object",
+        "properties": {
+          "max": {
+            "type": "number"
+          },
+          "min": {
+            "type": "number"
+          },
+          "average": {
+            "type": "number"
+          },
+          "sum": {
+            "type": "number"
+          },
+          "anyDiagonal": {
+            "type": "boolean"
+          },
+          "diagonalMatrices": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "matrixCount": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "max",
+          "min",
+          "average",
+          "sum",
+          "anyDiagonal",
+          "diagonalMatrices",
+          "matrixCount"
+        ]
+      },
+      "Health": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "const": "ok"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      }
+    }
+  }
+}
