@@ -27,6 +27,28 @@ Con los servicios levantados, abre [Swagger UI](http://localhost:8080/docs). Des
 
 El [JSON de OpenAPI](http://localhost:8080/openapi.json) documenta ambas APIs. El endpoint de Node se consulta desde la red interna de Compose. Swagger UI carga sus archivos de interfaz desde jsDelivr y requiere internet para mostrarlos.
 
+## Flujo de una solicitud
+
+```mermaid
+flowchart TD
+    Cliente["Cliente o Swagger UI"] --> Go["Matrix API en Go"]
+    Go --> JSON{"¿JSON válido?"}
+    JSON -->|"No"| Malformado["400 · JSON inválido"]
+    JSON -->|"Sí"| Validar{"¿Entrada válida para la ruta?"}
+    Validar -->|"No"| Invalida["422 · Entrada inválida"]
+    Validar -->|"Sí"| Operacion{"Ruta solicitada"}
+    Operacion -->|"/qr"| QR["Calcular Q y R"]
+    Operacion -->|"/rotate"| Giro["Girar la matriz 90°"]
+    QR --> Resultado["200 · Resultado"]
+    Giro --> Resultado
+    Operacion -->|"/analyze"| Analisis["Calcular QR o rotación"]
+    Analisis -->|"HTTP · Q y R o matriz rotada"| Node["Statistics API en Node.js"]
+    Node -->|"Estadísticas"| Combinado["Go devuelve 200 · Resultado y estadísticas"]
+    Node -->|"Falla la consulta"| Error["Go devuelve 502"]
+```
+
+Las rutas de QR y rotación se resuelven en Go. La ruta de análisis añade la llamada interna a Node. Para comprobar esa conexión sin enviar una matriz, usa `GET /health/ready`.
+
 ## Operaciones
 
 | Método y ruta | Resultado |
