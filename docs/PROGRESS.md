@@ -54,6 +54,6 @@ Las dos imágenes se construyeron y los dos contenedores quedaron saludables. Co
 
 ## Estado externo
 
-El [repositorio está publicado en GitHub](https://github.com/yamathe5/interseguro-coding-challenge). La [ejecución de CI de la implementación base en main](https://github.com/yamathe5/interseguro-coding-challenge/actions/runs/43245023502) pasó. El despliegue público sigue pendiente. Consulta [la guía de despliegue](DEPLOY.md) para configurarlo. No se aprovisionaron recursos con cobro.
+El [repositorio está publicado en GitHub](https://github.com/yamathe5/interseguro-coding-challenge). La [ejecución de CI de la implementación base en main](https://github.com/yamathe5/interseguro-coding-challenge/actions/runs/43245023502) pasó. La demo pública está desplegada en Render. Se verificaron QR, rotación y estadísticas a través de la URL pública de Go. Consulta [Swagger UI](https://interseguro-matrix-api.onrender.com/docs) y la [guía de despliegue](DEPLOY.md). No se aprovisionaron recursos con cobro.
 
 Codex asistió en la implementación, documentación y ejecución de pruebas. El historial y los resultados locales permiten revisar esa contribución.
