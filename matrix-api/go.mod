@@ -2,7 +2,10 @@ module interseguro/matrix-api
 
 go 1.25.0
 
-require github.com/gofiber/fiber/v2 v2.52.11
+require (
+	github.com/gofiber/fiber/v2 v2.52.11
+	gonum.org/v1/gonum v0.17.0
+)
 
 require (
 	github.com/andybalholm/brotli v1.1.0 // indirect

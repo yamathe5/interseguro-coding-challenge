@@ -2,6 +2,7 @@ package api
 
 import (
 	"errors"
+	"interseguro/matrix-api/internal/adapters/gonum"
 	"log/slog"
 	"time"
 
@@ -38,5 +39,6 @@ func New() *fiber.App {
 	app.Get("/health/live", health)
 	app.Get("/health/ready", health)
 	app.Post("/api/v1/matrices/rotate", matrixEndpoint(rotate))
+	app.Post("/api/v1/matrices/qr", matrixEndpoint(qr(gonum.QR{})))
 	return app
 }
