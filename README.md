@@ -2,30 +2,40 @@
 
 El proyecto implementa dos APIs. **Matrix API** (Go, Fiber y Gonum) recibe matrices y ofrece rotación de 90 grados y factorización QR. Cuando se pide un análisis, Go envía el resultado por HTTP a **Statistics API** (Node.js, Express y TypeScript), que calcula las estadísticas. Docker Compose levanta ambos servicios con un solo comando.
 
-## Ejecutar
+## Probar la demo pública
+
+1. Abre [Swagger UI en Render](https://interseguro-matrix-api.onrender.com/docs).
+2. Expande `POST /api/v1/matrices/analyze` y pulsa **Try it out**.
+3. Pega un cuerpo JSON de la [guía de pruebas manuales](docs/PRUEBAS-MANUALES.md) y pulsa **Execute**. La guía incluye resultados esperados y pasos para Postman.
+
+Si la primera solicitud devuelve 502 o 503 tras un periodo de inactividad, abre la [ruta de salud de Node](https://interseguro-coding-challenge-b623.onrender.com/health/ready), espera a que responda y vuelve a ejecutar la prueba.
+
+## Ejecutar en tu equipo
+
+Necesitas Docker en ejecución, Docker Compose v2 y conexión a internet para la primera compilación. Clona el repositorio con Git o descarga el ZIP desde GitHub y extráelo.
 
 ```sh
+git clone https://github.com/yamathe5/interseguro-coding-challenge.git
+cd interseguro-coding-challenge
 docker compose up --build --wait
-curl http://localhost:8080/health/ready
-docker compose down
 ```
 
-Compose publica Go en el puerto 8080 y mantiene Node en la red interna. Copia `.env.example` a `.env` para ajustar el puerto público o el timeout. Para arrancar sin Docker, usa Go 1.26 y Node 22. En terminales separadas ejecuta `cd statistics-api && npm ci && npm run build && npm start` y `cd matrix-api && go run ./cmd/api`. Go usa `http://127.0.0.1:3000` por defecto.
+Si descargaste el ZIP, abre una terminal en la carpeta que contiene `compose.yaml` y ejecuta solo el último comando. Abre [la ruta de disponibilidad](http://localhost:8080/health/ready) y comprueba que devuelva `{"status":"ok"}`. Luego abre [Swagger UI local](http://localhost:8080/docs) y usa los mismos ejemplos de la demo pública. Cuando termines, ejecuta `docker compose down` desde la misma carpeta.
 
-En este equipo Windows, Docker Engine se verificó desde Ubuntu en WSL. Desde PowerShell y en la raíz del repo, ejecuta y deja la terminal abierta:
+Compose publica Go en el puerto 8080 y mantiene Node en la red interna. Copia `.env.example` a `.env` si necesitas cambiar el puerto público o el tiempo de espera. Si cambias el puerto, úsalo también en los enlaces locales.
+
+Si tienes Docker Engine dentro de Ubuntu en WSL, ejecuta estos comandos desde PowerShell en la carpeta del proyecto y deja la terminal abierta:
 
 ```powershell
 wsl -d Ubuntu -u root -- systemctl start docker
 wsl -d Ubuntu -u root -- docker compose up --build
 ```
 
-Abre Swagger UI en otra ventana. Para detener los servicios, pulsa Ctrl+C en la terminal de Compose.
+Abre Swagger en otra ventana. Pulsa **Ctrl+C** para detener los servicios y ejecuta `wsl -d Ubuntu -u root -- docker compose down` para retirarlos.
 
-## Prueba en Swagger UI
+Si prefieres ejecutar sin Docker, instala Go 1.26 y Node.js 22. En dos terminales, ejecuta `cd statistics-api && npm ci && npm run build && npm start` y `cd matrix-api && go run ./cmd/api`. Go consulta a Node en `http://127.0.0.1:3000` por defecto.
 
-Con los servicios levantados, abre [Swagger UI](http://localhost:8080/docs). Despliega `POST /api/v1/matrices/analyze`, pulsa **Try it out** y luego **Execute**. Puedes enviar el ejemplo precargado o editar sus números. Cambia `operation` a `rotate` para ver la rotación y sus estadísticas.
-
-El [JSON de OpenAPI](http://localhost:8080/openapi.json) documenta ambas APIs. El endpoint de Node se consulta desde la red interna de Compose. Swagger UI carga sus archivos de interfaz desde jsDelivr y requiere internet para mostrarlos.
+El [contrato OpenAPI](matrix-api/internal/adapters/http/openapi.json) describe las dos APIs. Swagger UI carga sus archivos desde jsDelivr, así que requiere conexión a internet.
 
 ## Flujo de una solicitud
 
