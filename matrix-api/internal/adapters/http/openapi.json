@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:8080"
+      "url": "/"
     }
   ],
   "paths": {
@@ -459,7 +459,7 @@
         }
       ],
       "post": {
-        "summary": "Aggregate across all submitted matrices",
+        "summary": "Aggregate across all submitted matrices (private Docker network)",
         "requestBody": {
           "required": true,
           "content": {

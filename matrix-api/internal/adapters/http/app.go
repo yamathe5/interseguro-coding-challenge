@@ -47,6 +47,7 @@ func New(client application.StatisticsClient) *fiber.App {
 		return nil
 	})
 	app.Use(recover.New())
+	registerDocs(app)
 	health := func(c *fiber.Ctx) error { return c.JSON(fiber.Map{"status": "ok"}) }
 	app.Get("/health/live", health)
 	app.Get("/health/ready", func(c *fiber.Ctx) error {
