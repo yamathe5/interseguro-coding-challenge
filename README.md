@@ -12,6 +12,15 @@ docker compose down
 
 Compose publica Go en el puerto 8080 y mantiene Node en la red interna. Copia `.env.example` a `.env` para ajustar el puerto público o el timeout. Para arrancar sin Docker, usa Go 1.26 y Node 22. En terminales separadas ejecuta `cd statistics-api && npm ci && npm run build && npm start` y `cd matrix-api && go run ./cmd/api`. Go usa `http://127.0.0.1:3000` por defecto.
 
+En este equipo Windows, Docker Engine se verificó desde Ubuntu en WSL. Desde PowerShell y en la raíz del repo, ejecuta:
+
+```powershell
+wsl -d Ubuntu -u root -- systemctl start docker
+wsl -d Ubuntu -u root -- docker compose up --build --wait
+curl.exe http://localhost:8080/health/ready
+wsl -d Ubuntu -u root -- docker compose down
+```
+
 ## Operaciones
 
 | Método y ruta | Resultado |
