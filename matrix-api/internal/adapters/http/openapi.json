@@ -6,13 +6,14 @@
   },
   "servers": [
     {
-      "url": "http://localhost:8080"
+      "url": "/"
     }
   ],
   "paths": {
     "/health/live": {
       "get": {
-        "summary": "Process liveness",
+        "summary": "Estado del proceso",
+        "description": "Confirma que la API está en ejecución. Devuelve 200 cuando el proceso puede responder. En Go, esta comprobación funciona aunque Node no esté disponible.",
         "responses": {
           "200": {
             "description": "Success",
@@ -36,7 +37,8 @@
     },
     "/health/ready": {
       "get": {
-        "summary": "Service readiness",
+        "summary": "Disponibilidad para recibir solicitudes",
+        "description": "En la API pública, comprueba que Go pueda comunicarse con el servicio de estadísticas. Devuelve 200 si Node responde correctamente o 503 si la dependencia no está disponible.",
         "responses": {
           "200": {
             "description": "Success",
@@ -77,7 +79,8 @@
     },
     "/api/v1/matrices/qr": {
       "post": {
-        "summary": "Reduced QR factorization",
+        "summary": "Factorización QR reducida",
+        "description": "Recibe una matriz rectangular y devuelve los factores Q y R, las dimensiones originales y la convención usada. Q tiene columnas ortonormales y su producto con R reconstruye la entrada. Esta operación se calcula en Go.",
         "requestBody": {
           "required": true,
           "content": {
@@ -184,7 +187,8 @@
     },
     "/api/v1/matrices/rotate": {
       "post": {
-        "summary": "Rotate 90 degrees clockwise",
+        "summary": "Rotación de 90 grados en sentido horario",
+        "description": "Recibe una matriz rectangular y devuelve la matriz girada junto con el ángulo aplicado. Por ejemplo, una matriz de 2 filas y 3 columnas pasa a tener 3 filas y 2 columnas. Esta operación se calcula en Go.",
         "requestBody": {
           "required": true,
           "content": {
@@ -295,7 +299,8 @@
     },
     "/api/v1/matrices/analyze": {
       "post": {
-        "summary": "Compute statistics over Q and R, or the rotated matrix",
+        "summary": "Analizar una matriz y obtener estadísticas",
+        "description": "Envía una matriz y selecciona qr o rotate. Go calcula los factores Q y R o la matriz rotada, y envía ese resultado a Node por HTTP. La respuesta reúne el resultado de la operación y sus estadísticas. Devuelve 502 si falla la consulta a Node.",
         "requestBody": {
           "required": true,
           "content": {
@@ -459,7 +464,8 @@
         }
       ],
       "post": {
-        "summary": "Aggregate across all submitted matrices",
+        "summary": "Calcular estadísticas de matrices (servicio interno)",
+        "description": "Recibe una o más matrices. Devuelve máximo, mínimo, promedio y suma sobre todos sus elementos, y los índices de las matrices diagonales. Go llama a este endpoint por la red interna de Compose.",
         "requestBody": {
           "required": true,
           "content": {

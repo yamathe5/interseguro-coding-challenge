@@ -1,6 +1,6 @@
 # Evidencia de entrega — 12 de noviembre de 2026 (Lima)
 
-Rama local: `feat/coding-challenge`. El repositorio se inicializó en la carpeta del reto. `main` apunta al arranque y la rama de trabajo contiene la implementación. El PDF original no estaba en la carpeta. Se usó la transcripción de `docs/01-REQUISITOS.md`.
+La implementación base se fusionó en `main` mediante un pull request. El PDF original no estaba en la carpeta. Se usó la transcripción de `docs/01-REQUISITOS.md`.
 
 | SHA | Etapa |
 |---|---|
@@ -15,7 +15,7 @@ Rama local: `feat/coding-challenge`. El repositorio se inicializó en la carpeta
 | `7e846a9` | GitHub Actions |
 | `b967e97` | OpenAPI y guía de despliegue |
 
-El commit que incluye este documento registra el cierre y los ajustes de IDs, manejo de errores y dependencias de desarrollo. Su SHA se consulta con `git rev-parse HEAD`. La validación y la rotación quedaron juntas porque Windows bloqueó transitoriamente el ejecutable de pruebas durante el primer intento de la etapa de validación. Se volvió a ejecutar la suite y ambos cambios pasaron antes de registrarse.
+El commit `cef4af8` registra los ajustes de IDs, manejo de errores y dependencias de desarrollo. El commit `157f1bc` añade Swagger UI y el texto de presentación. Se verificaron la página, el contrato y la integración HTTP con Compose. Las pruebas de Go pasaron en Docker. La validación y la rotación quedaron juntas porque Windows bloqueó transitoriamente el ejecutable de pruebas durante el primer intento de la etapa de validación. Se volvió a ejecutar la suite y ambos cambios pasaron antes de registrarse.
 
 ## Estructura
 
@@ -54,6 +54,6 @@ Las dos imágenes se construyeron y los dos contenedores quedaron saludables. Co
 
 ## Estado externo
 
-El workflow quedó versionado y los checks equivalentes se ejecutaron localmente. No hay ejecución remota de GitHub Actions, PR ni repositorio publicado porque no se configuró un remoto de entrega. Tampoco hay despliegue público ni URL verificable porque no hay un destino cloud configurado. La guía describe cómo desplegar y verificar cuando haya un destino. No se aprovisionaron recursos con cobro.
+El [repositorio está publicado en GitHub](https://github.com/yamathe5/interseguro-coding-challenge). La [ejecución de CI de la implementación base en main](https://github.com/yamathe5/interseguro-coding-challenge/actions/runs/43245023502) pasó. El despliegue público sigue pendiente. Consulta [la guía de despliegue](DEPLOY.md) para configurarlo. No se aprovisionaron recursos con cobro.
 
 Codex asistió en la implementación, documentación y ejecución de pruebas. El historial y los resultados locales permiten revisar esa contribución.
